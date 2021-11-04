@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -22,36 +23,34 @@ public class GamePanel extends JPanel{
 	private final Color OFF = Color.green;
 	private final Color ON = Color.red;
 	private final Color BACKGROUND = Color.pink;
+	private final Color FONT_COLOR = Color.red;
 	
-	private final int WIDTH = 600;
-	private final int HEIGHT = 600;
 	private final int BOX_SIZE = 200;
 	private final int ROUND_DELAY = 1000;
+
 	
 	private int sTimer; // Timer for how long each simon move is displayed red
 	private int colorTimer; // Timer for how long all squares are green between each color display
 	private int currSMoveIdx; // Used for displaying Simon moves
 	private int currPMoveIdx; // Used for displaying player moves
-	private int roundNum;
+	private Integer roundNum;
+	private Integer highScore;
 	
 	private boolean playerTurn;
 	private boolean pColor; // Used to distinguish between a key press and release in repaint()
+	private boolean gameOver;
 	
 	ArrayList<Moves> simonMoves;
 	ArrayList<Moves> playerMoves;
 	
 	
-	GamePanel() {
-		simonMoves = new ArrayList<Moves>();
-		sTimer = 0;
-		playerTurn = false;
-		roundNum = 1;
-		
-		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+	GamePanel() {		
+		this.setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
 		this.setBackground(BACKGROUND);
+		highScore = 0;
 		
 		setKeyBindings();
-		simonMove();
+		reset();
 	}
 	
 //---------------------------- Display ---------------------------------------------	
@@ -65,7 +64,23 @@ public class GamePanel extends JPanel{
 		page.fillRect(200, 0, BOX_SIZE, BOX_SIZE); // UP
 		page.fillRect(0, 200, BOX_SIZE, BOX_SIZE); // LEFT
 		page.fillRect(400, 200, BOX_SIZE, BOX_SIZE); // RIGHT
-		page.fillRect(200, 400, BOX_SIZE, BOX_SIZE); // DOWN		
+		page.fillRect(200, 400, BOX_SIZE, BOX_SIZE); // DOWN
+	
+		// Score Display
+		page.setColor(FONT_COLOR);
+		page.setFont(new Font("MV Boli",Font.BOLD,30));	
+		String score = "Score: "+roundNum.toString();
+		page.drawString(score, 0, 30);
+		
+		// HighScore Display
+		String highScoreStr = "HS: "+highScore;
+		page.drawString(highScoreStr, 400, 30);
+		
+		// GameOver Display
+		if(gameOver) {
+			page.setFont(new Font("MV Boli",Font.BOLD,80));
+			page.drawString("GAME OVER", 40, 320);
+		} else {
 		
 	//----------------------------- Display Simon moves -------------------------------------
 		/* Display mechanism was roughly based off code found here:
@@ -154,7 +169,7 @@ public class GamePanel extends JPanel{
 			}
 		}
 	//--------------------------------------------------------------------------------------	
-	
+		}
 	}
 //------------------------------------------------------------------------------------
 	
@@ -348,8 +363,30 @@ public class GamePanel extends JPanel{
 	}
 	
 	void gameOver() {
+		gameOver = true;
+		highScore = roundNum;
+		repaint();
 		System.out.println("GAME OVER!");
-		System.exit(0);
+		// Wait (Maybe Disable movements)
+		ActionListener delay = new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				reset();
+			}
+		};
+		Timer timer = new Timer(1500, delay);
+		timer.setRepeats(false);
+		timer.start();	
+		//System.exit(0);
+	}
+	
+	void reset() {
+		simonMoves = new ArrayList<Moves>();
+		sTimer = 0;
+		playerTurn = false;
+		gameOver = false;
+		roundNum = 1;
+		
+		simonMove();
 	}
 
 	
