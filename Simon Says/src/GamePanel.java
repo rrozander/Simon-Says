@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,6 +12,7 @@ import java.util.Random;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -22,12 +24,20 @@ public class GamePanel extends JPanel{
 	
 	private final Color OFF = Color.green;
 	private final Color ON = Color.red;
-	private final Color BACKGROUND = Color.pink;
+	private final Color BACKGROUND = new Color(0,162,232);
 	private final Color FONT_COLOR = Color.red;
 	
 	private final int BOX_SIZE = 200;
 	private final int ROUND_DELAY = 1000;
 
+	private Image rightArrow;
+	private Image rightArrowFilled;
+	private Image leftArrow;
+	private Image leftArrowFilled;
+	private Image downArrow;
+	private Image downArrowFilled;
+	private Image upArrow;
+	private Image upArrowFilled;
 	
 	private int sTimer; // Timer for how long each simon move is displayed red
 	private int colorTimer; // Timer for how long all squares are green between each color display
@@ -47,6 +57,16 @@ public class GamePanel extends JPanel{
 	GamePanel() {		
 		this.setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
 		this.setBackground(BACKGROUND);
+		
+		rightArrow = new ImageIcon("right-arrow.png").getImage();
+		rightArrowFilled = new ImageIcon("right-arrow-filled.png").getImage();
+		leftArrow = new ImageIcon("left-arrow.png").getImage();
+		leftArrowFilled = new ImageIcon("left-arrow-filled.png").getImage();
+		upArrow = new ImageIcon("up-arrow.png").getImage();
+		upArrowFilled = new ImageIcon("up-arrow-filled.png").getImage();
+		downArrow = new ImageIcon("down-arrow.png").getImage();
+		downArrowFilled = new ImageIcon("down-arrow-filled.png").getImage();
+		
 		highScore = 0;
 		
 		setKeyBindings();
@@ -59,13 +79,12 @@ public class GamePanel extends JPanel{
 		super.paintComponent(gr);		
 		Graphics2D page = (Graphics2D) gr;	
 		
-		// Draw 4 Boxes
-		page.setColor(OFF);		
-		page.fillRect(200, 0, BOX_SIZE, BOX_SIZE); // UP
-		page.fillRect(0, 200, BOX_SIZE, BOX_SIZE); // LEFT
-		page.fillRect(400, 200, BOX_SIZE, BOX_SIZE); // RIGHT
-		page.fillRect(200, 400, BOX_SIZE, BOX_SIZE); // DOWN
-	
+		// Draw 4 Boxes			
+		page.drawImage(upArrow, 200, 0, null); // UP
+		page.drawImage(leftArrow, 0, 200, null); // LEFT
+		page.drawImage(rightArrow ,400, 200, null); // RIGHT
+		page.drawImage(downArrow, 200, 400, null); // DOWN
+
 		// Score Display
 		page.setColor(FONT_COLOR);
 		page.setFont(new Font("MV Boli",Font.BOLD,30));	
@@ -90,24 +109,23 @@ public class GamePanel extends JPanel{
 		// Sets the current move box to red until sTimer hits 0
 		if(!playerTurn) {
 			if (colorTimer == 0) { 
-				if(sTimer > 0) {
-					page.setColor(ON);			
+				if(sTimer > 0) {			
 					Moves currMove = simonMoves.get(currSMoveIdx);
 					switch(currMove) {
 						case LEFT:		
-							page.fillRect(0, 200, BOX_SIZE, BOX_SIZE); // LEFT
+							page.drawImage(leftArrowFilled, 0, 200, null); // LEFT
 						break;
 						
 						case RIGHT:
-							page.fillRect(400, 200, BOX_SIZE, BOX_SIZE); // RIGHT
+							page.drawImage(rightArrowFilled ,400, 200, null); // RIGHT
 						break;
 						
 						case UP:
-							page.fillRect(200, 0, BOX_SIZE, BOX_SIZE); // UP
+							page.drawImage(upArrowFilled, 200, 0, null); // UP
 						break;
 						
 						case DOWN:
-							page.fillRect(200, 400, BOX_SIZE, BOX_SIZE); // DOWN
+							page.drawImage(downArrowFilled, 200, 400, null); // DOWN
 						break;
 					default: System.out.println("ERROR");
 						break;
@@ -116,12 +134,11 @@ public class GamePanel extends JPanel{
 					repaint();
 				}
 			} else {
-				// Set all boxes to green
-				page.setColor(OFF);
-				page.fillRect(200, 0, BOX_SIZE, BOX_SIZE); // UP
-				page.fillRect(0, 200, BOX_SIZE, BOX_SIZE); // LEFT
-				page.fillRect(400, 200, BOX_SIZE, BOX_SIZE); // RIGHT
-				page.fillRect(200, 400, BOX_SIZE, BOX_SIZE); // DOWN
+				// Set all boxes to green				
+				page.drawImage(upArrow, 200, 0, null); // UP
+				page.drawImage(leftArrow, 0, 200, null); // LEFT
+				page.drawImage(rightArrow ,400, 200, null); // RIGHT
+				page.drawImage(downArrow, 200, 400, null); // DOWN
 				colorTimer--;
 				repaint();			
 			}
@@ -148,19 +165,19 @@ public class GamePanel extends JPanel{
 				
 				switch(currMove) {
 					case LEFT:		
-						page.fillRect(0, 200, BOX_SIZE, BOX_SIZE); // LEFT
+						page.drawImage(leftArrowFilled, 0, 200, null); // LEFT
 					break;
 					
 					case RIGHT:
-						page.fillRect(400, 200, BOX_SIZE, BOX_SIZE); // RIGHT
+						page.drawImage(rightArrowFilled ,400, 200, null); // RIGHT
 					break;
 					
 					case UP:
-						page.fillRect(200, 0, BOX_SIZE, BOX_SIZE); // UP
+						page.drawImage(upArrowFilled, 200, 0, null); // UP
 					break;
 					
 					case DOWN:
-						page.fillRect(200, 400, BOX_SIZE, BOX_SIZE); // DOWN
+						page.drawImage(downArrowFilled, 200, 400, null); // DOWN
 					break;
 					
 					default: repaint();
@@ -169,7 +186,9 @@ public class GamePanel extends JPanel{
 			}
 		}
 	//--------------------------------------------------------------------------------------	
+		
 		}
+
 	}
 //------------------------------------------------------------------------------------
 	
