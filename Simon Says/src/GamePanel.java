@@ -24,7 +24,7 @@ public class GamePanel extends JPanel{
 	
 	private final Color OFF = Color.green;
 	private final Color ON = Color.red;
-	private final Color BACKGROUND = new Color(0,162,232);
+	final static Color BACKGROUND = new Color(0,162,232);
 	private final Color FONT_COLOR = Color.red;
 	
 	private final int BOX_SIZE = 200;
@@ -146,8 +146,8 @@ public class GamePanel extends JPanel{
 			if(sTimer == 0) {
 				if(currSMoveIdx < simonMoves.size()-1) {
 					currSMoveIdx++;
-					sTimer = 1000;
-					colorTimer = 1000;
+					sTimer = 300;
+					colorTimer = 300;
 				} else {
 					sTimer--;
 					playerMove();
@@ -359,7 +359,7 @@ public class GamePanel extends JPanel{
 	}
 	
 	void displaySimonMoves() {
-		sTimer = 1000;
+		sTimer = 300;
 		colorTimer = 0;
 		currSMoveIdx = 0;
 		repaint();
