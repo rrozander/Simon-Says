@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -58,14 +59,32 @@ public class GamePanel extends JPanel{
 		this.setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
 		this.setBackground(BACKGROUND);
 		
-		rightArrow = new ImageIcon("right-arrow.png").getImage();
-		rightArrowFilled = new ImageIcon("right-arrow-filled.png").getImage();
-		leftArrow = new ImageIcon("left-arrow.png").getImage();
-		leftArrowFilled = new ImageIcon("left-arrow-filled.png").getImage();
-		upArrow = new ImageIcon("up-arrow.png").getImage();
-		upArrowFilled = new ImageIcon("up-arrow-filled.png").getImage();
-		downArrow = new ImageIcon("down-arrow.png").getImage();
-		downArrowFilled = new ImageIcon("down-arrow-filled.png").getImage();
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		
+		URL rA = classLoader.getResource("right-arrow.png");
+		rightArrow = new ImageIcon(rA).getImage();
+		
+		URL rAF = classLoader.getResource("right-arrow-filled.png");
+		rightArrowFilled = new ImageIcon(rAF).getImage();
+		
+		URL lA = classLoader.getResource("left-arrow.png");
+		leftArrow = new ImageIcon(lA).getImage();
+		
+		URL lAF = classLoader.getResource("left-arrow-filled.png");
+		leftArrowFilled = new ImageIcon(lAF).getImage();
+		
+		URL uA = classLoader.getResource("up-arrow.png");
+		upArrow = new ImageIcon(uA).getImage();
+		
+		URL uAF = classLoader.getResource("up-arrow-filled.png");
+		upArrowFilled = new ImageIcon(uAF).getImage();
+		
+		URL dA = classLoader.getResource("down-arrow.png");
+		downArrow = new ImageIcon(dA).getImage();
+		
+		URL dAF = classLoader.getResource("down-arrow-filled.png");
+		downArrowFilled = new ImageIcon(dAF).getImage();
+		
 		
 		highScore = 0;
 		
