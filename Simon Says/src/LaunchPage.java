@@ -1,6 +1,9 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -9,6 +12,7 @@ public class LaunchPage extends JFrame{
 	
 	JButton startButton;
 	JLabel gameTitle;
+	public static Image simonIcon;
 	
 	LaunchPage() {	
 		startButton = new JButton();
@@ -31,6 +35,11 @@ public class LaunchPage extends JFrame{
 		gameTitle.setText("Simon Says");
 		gameTitle.setBounds(100, 100, 400, 200);
 		
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		URL simonIconURL = classLoader.getResource("simon-icon.png");
+		simonIcon = new ImageIcon(simonIconURL).getImage();
+		
+		this.setIconImage(simonIcon);
 		this.setTitle("Simon Says");	
 		this.getContentPane().setBackground(GamePanel.BACKGROUND);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

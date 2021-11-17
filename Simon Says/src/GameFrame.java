@@ -12,6 +12,7 @@ public class GameFrame extends JFrame{
 		gamePanel = new GamePanel();
 		
 		this.setTitle("Simon Says");
+		this.setIconImage(LaunchPage.simonIcon);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.add(gamePanel);
